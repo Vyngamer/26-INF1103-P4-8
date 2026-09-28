@@ -1,5 +1,7 @@
 from google import genai
 import json
+import pathlib
+import base64
 
 client = genai.Client()
 gemini_flash = "gemini-3.8-flash"
@@ -31,7 +33,7 @@ def interact(text_input, previous_interaction_id=None):
     )
     return interaction
 
-def chatbot_welcome_message(survey_data, previous_interaction_id):
+def chatbot_welcome_message(survey_data, previous_interaction_id=None):
     """
     Used at the start of the program at the start of the day after the survey is done by the user. This function properly feeds in the proper system instructions including research papers that will inform the chatbot on the relevant data to better serve the user.
 
@@ -50,7 +52,15 @@ def chatbot_welcome_message(survey_data, previous_interaction_id):
     """
     survey_data = json.dumps(survey_data)
 
-    system_instruction = "You are a counseller for a student to assess whether he/she is going to experience burnout."
+    system_instruction = "You are a counseller for a student to assess whether he/she is going to experience burnout. "
+
+    file_path = pathlib.Path('./papers/redefining_burnout_key_symptoms.pdf')
+
+    prompt = [
+            {"type": "text", "text": survey_data},
+            {"type": "document", "data": base64.b64encode(file_path.read_bytes()).decode("utf-8"), "mime_type": "application/pdf"}
+    ]
+
     prompt = "Here are the results of a survey:\n" + survey_data
 
     interaction = client.interactions.create(
@@ -61,3 +71,7 @@ def chatbot_welcome_message(survey_data, previous_interaction_id):
     )
     return interaction
 
+
+if __name__ == "__main__":
+    interaction = chatbot_welcome_message({})
+    print(interaction.output_text)
