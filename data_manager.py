@@ -13,14 +13,22 @@ def save(record, filename):
     records = load(filename)
 
     if records:
-        record["record_id"] = records[-1]["record_id"] + 1
-    
+        record_id = records[-1]["record_id"] + 1
     else: 
-        record["record_id"] = 1001
+        record_id = 1001
 
-    record["timestamp"] = datetime.now().isoformat()
+    now = datetime.now()
 
-    records.append(record)
+    new_record = {
+        "record_id": record_id,
+        "date": now.strftime("%d-%m-%Y"),
+        "time": now.strftime("%H:%M:%S"),
+        "user_input": record["user_input"],
+        "ai_output": record["ai_output"],
+        "logic_output": record["logic_output"]
+    }
+
+    records.append(new_record)
 
     with open(filename, "w") as file:
         json.dump(records, file, indent=4)
@@ -36,13 +44,13 @@ load(filename)
 #Testing
 
 user_input = {
-    "sleep_duration": 5,
+    "sleep_duration": 3,
     "stress_level": 8,
     "focus_level": 2,
     "academic_workload": 9,
     "mood": "Exhausted",
     "social_activity_level": 3,
-    "reflection": "I have many assignments due."
+    "reflection": "im feeling too stressed already"
     }
 
 ai_output = {
