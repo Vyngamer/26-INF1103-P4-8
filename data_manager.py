@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+import pandas as pd
 
 def load(filename):
     try:
@@ -27,7 +28,6 @@ def save(record, filename):
         "ai_output": record["ai_output"],
         "logic_output": record["logic_output"]
     }
-
     records.append(new_record)
 
     with open(filename, "w") as file:
@@ -43,6 +43,15 @@ def query(filter, filename):
     for record in records:
         if filter(record):
             matching_records.append(record)
+
+    return matching_records
+
+def query_pd(filter, filename):
+    records = load(filename)
+
+    df = pd.json_normalize(records)
+
+    matching_records = df[filter(df)]
 
     return matching_records
 
@@ -86,9 +95,16 @@ record = {
 
 #save(record, filename)
 
-results = query(
+# filter normal query
+'''results = query(
     lambda record: record["user_input"]["stress_level"] < 8,
     filename
 )
 
-print(results)
+print(results)'''
+
+# filter query using pandas
+'''results = query_pd(
+    lambda df: df["user_input.stress_level"] >= 8, filename)
+
+print(results)'''
