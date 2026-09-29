@@ -35,17 +35,26 @@ def save(record, filename):
 
     return print(f"Records has been saved in {filename}")
 
+def query(filter, filename):
+    records = load(filename)
+
+    matching_records = []
+
+    for record in records:
+        if filter(record):
+            matching_records.append(record)
+
+    return matching_records
 
 # Main Function
 
 filename = "records.json"
 load(filename)
 
-#Testing
-
+#Note that below is the required format for the return value for each of the 3 layers
 user_input = {
     "sleep_duration": 3,
-    "stress_level": 8,
+    "stress_level": 3,
     "focus_level": 2,
     "academic_workload": 9,
     "mood": "Exhausted",
@@ -68,10 +77,18 @@ logic_output = {
     "counselling_recommendation": True
     }
 
+#Need to insert in the actual functions from other layers
 record = {
     "user_input": user_input,
     "ai_output": ai_output,
     "logic_output": logic_output
     }
 
-save(record, filename)
+#save(record, filename)
+
+results = query(
+    lambda record: record["user_input"]["stress_level"] < 8,
+    filename
+)
+
+print(results)
