@@ -46,12 +46,15 @@ def query(filter, filename):
 
     return matching_records
 
-def query_pd(filter, filename):
+def query_pd(filter, filename, columns=None):
     records = load(filename)
 
     df = pd.json_normalize(records)
 
     matching_records = df[filter(df)]
+
+    if columns:
+        matching_records = matching_records.loc[:, columns]
 
     return matching_records
 
@@ -105,6 +108,9 @@ print(results)'''
 
 # filter query using pandas
 '''results = query_pd(
-    lambda df: df["user_input.stress_level"] >= 8, filename)
+    lambda df: df["user_input.stress_level"] >= 8,
+    filename,
+    columns=["record_id", "date", "time", "user_input.reflection"]
+    )
 
 print(results)'''
