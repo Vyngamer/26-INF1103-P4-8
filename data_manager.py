@@ -1,13 +1,18 @@
 import json
 from datetime import datetime
 import pandas as pd
+import os
 
 def load(filename):
-    try:
-        with open(filename,"r") as file:
+    if os.path.exists(filename) 
+        try:
+            with open(filename,"r") as file:
+                records = json.load(file)
+        except json.JSONDecodeError:
+            records = []
+    else:
+        with open(filename,"w") as file:
             records = json.load(file)
-    except json.JSONDecodeError:
-        records = []
     return records
     
 def save(record, filename):
