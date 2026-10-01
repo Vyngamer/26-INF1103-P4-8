@@ -37,3 +37,35 @@ def assess(record, ai_result):
         "route": route,
         "needs_counselling": route in ("Urgent support", "Counsellor follow-up"),
     }
+
+# function to get risk tier based on mental wellness risk score
+def get_risk_tier(risk_score):
+    if risk_score < 0 or risk_score > 100:
+        tier = "Invalid"
+    if risk_score >= 71:
+        tier = "High"
+    elif risk_score >= 41:
+        tier = "Medium"
+    else:
+        tier = "Low"
+    return tier
+
+
+# function to get warnings based on various factors
+def get_warnings(sentiment_analysis, burnout_risk_score, sleep, workload, social_activity_level, focus):
+    warnings = []
+    # check for high burnout warning due to sleep
+    if burnout_risk_score > 75 and sleep < 6:
+        warnings.append("High burnout warning (Sleep)")
+    # check for burnout warning due to workload
+    if burnout_risk_score > 60 and workload >= 7:
+        warnings.append("Burnout warning (Workload)")
+
+    # check for social withdrawal risk
+    if social_activity_level <= 3 and sentiment_analysis == "Negative":
+        warnings.append("social withdrawal risk")
+
+    # check for cognitive fatigue risk
+    if focus <= 4 and sentiment_analysis == "Negative":
+        warnings.append("cognitive fatigue risk")
+    return warnings
