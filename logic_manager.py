@@ -50,7 +50,6 @@ def get_risk_tier(risk_score):
         tier = "Low"
     return tier
 
-
 # function to get warnings based on various factors
 def get_warnings(sentiment_analysis, burnout_risk_score, sleep, workload, social_activity_level, focus):
     warnings = []
