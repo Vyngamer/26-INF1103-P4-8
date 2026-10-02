@@ -11,8 +11,9 @@ def load(filename):
         except json.JSONDecodeError:
             records = []
     else:
+        records = []
         with open(filename,"w") as file:
-            records = json.load(file)
+            json.dump(records, file)
     return records
     
 def save(record, filename):
@@ -101,7 +102,7 @@ record = {
     "logic_output": logic_output
     }
 
-#save(record, filename)
+save(record, filename)
 
 # filter normal query
 '''results = query(
