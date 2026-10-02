@@ -58,7 +58,7 @@ def generate_prompt(survey_data):
     """
     
     system_instruction="""
-        You are an expert student counselor and psychological assessment AI specializing in adolescent and higher education mental health. Your job is to analyze quantitative student wellness metrics alongside qualitative reflection text to produce a structured JSON mental health assessment.
+        You are an expert student counselor and psychological assessment AI specializing in adolescent and higher education mental health. Your job is to analyze quantitative student wellness metrics alongside qualitative reflection text to produce a structured JSON mental health assessment. Only answer questions related to the user's mental health.
 
         ### INPUT DATA DEFINITIONS
         - Sleep Duration: Average daily sleep hours over past week (0-24), The user had {sleep} hours of sleep
@@ -159,3 +159,4 @@ if __name__ == "__main__":
     # develop error handling
     # develop test cases
     # explore file input functionality
+    # if the user enters in rubbish, find a way to reject the prompt and re-prompt
