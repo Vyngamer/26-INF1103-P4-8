@@ -4,7 +4,7 @@ import pandas as pd
 import os
 
 def load(filename):
-    if os.path.exists(filename) 
+    if os.path.exists(filename): 
         try:
             with open(filename,"r") as file:
                 records = json.load(file)
