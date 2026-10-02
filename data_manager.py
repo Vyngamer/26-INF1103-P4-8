@@ -2,6 +2,7 @@ import json
 from datetime import datetime
 import pandas as pd
 import os
+import uuid
 
 def load(filename):
     if os.path.exists(filename): 
@@ -19,15 +20,10 @@ def load(filename):
 def save(record, filename):
     records = load(filename)
 
-    if records:
-        record_id = records[-1]["record_id"] + 1
-    else: 
-        record_id = 1001
-
     now = datetime.now()
 
     new_record = {
-        "record_id": record_id,
+        "record_id": str(uuid.uuid4()),
         "date": now.strftime("%d-%m-%Y"),
         "time": now.strftime("%H:%M:%S"),
         "user_input": record["user_input"],
@@ -71,8 +67,8 @@ load(filename)
 
 #Note that below is the required format for the return value for each of the 3 layers
 user_input = {
-    "sleep_duration": 3,
-    "stress_level": 3,
+    "sleep_duration": 5,
+    "stress_level": 1,
     "focus_level": 2,
     "academic_workload": 9,
     "mood": "Exhausted",
@@ -106,7 +102,7 @@ save(record, filename)
 
 # filter normal query
 '''results = query(
-    lambda record: record["user_input"]["stress_level"] < 8,
+    lambda record: record["user_input"]["stress_level"] > 8,
     filename
 )
 
@@ -119,4 +115,5 @@ print(results)'''
     columns=["record_id", "date", "time", "user_input.reflection"]
     )
 
-print(results)'''
+print(results)
+'''
