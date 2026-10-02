@@ -10,9 +10,6 @@ def load(filename):
                 records = json.load(file)
         except json.JSONDecodeError:
             records = []
-    else:
-        with open(filename,"w") as file:
-            records = json.load(file)
     return records
     
 def save(record, filename):
